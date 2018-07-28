@@ -1,3 +1,9 @@
+.PlayButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .PlayButton__button {
   position: relative;
   font-weight: bold;

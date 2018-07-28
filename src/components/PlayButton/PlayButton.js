@@ -4,8 +4,9 @@ import classnames from 'classnames';
 import audioContext from '../../classes/AudioContext';
 
 import './PlayButton.css';
+import { connect } from 'react-redux';
 
-export default class PlayButton extends PureComponent {
+export class PlayButton extends PureComponent {
 
   source = null;
   state = {
@@ -13,9 +14,12 @@ export default class PlayButton extends PureComponent {
     start: false,
   };
 
-  constructor(props) {
-    super(props);
-    audioContext.load([props.sample]);
+  componentDidMount() {
+    audioContext.load([this.props.sample]);
+  }
+
+  componentDidUpdate() {
+    audioContext.update(this.source, this.props)
   }
 
   getTitle = () => this.state.start ? 'Stop' : 'Play';
@@ -28,7 +32,7 @@ export default class PlayButton extends PureComponent {
 
   handleClickButton = () => {
     if (!this.state.start) {
-      this.source = audioContext.getSource(this.props.sample);
+      this.source = audioContext.getSource(this.props.sample, this.props);
       this.source.onended = this.handleEnd;
       this.source.loop = this.state.loop;
       this.source.start();
@@ -55,3 +59,7 @@ export default class PlayButton extends PureComponent {
     </div>;
 
 }
+
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps)(PlayButton);
