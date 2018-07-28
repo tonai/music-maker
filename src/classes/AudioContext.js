@@ -1,11 +1,19 @@
 class AudioContext {
 
-  context = null;
+  analyser = null;
+  biquadFilter = null;
   bufferMap = new Map();
+  context = null;
+  distortion = null;
+  gainNode = null;
   sampleDir = 'samples/';
 
   constructor() {
     this.context = new window.AudioContext();
+    this.analyser = this.context.createAnalyser();
+    this.distortion = this.context.createWaveShaper();
+    this.gainNode = this.context.createGain();
+    this.biquadFilter = this.context.createBiquadFilter();
   }
 
   decodeAudioData = buffer =>
@@ -36,12 +44,19 @@ class AudioContext {
         return map;
       }, this.bufferMap));
 
-  play = title => {
+  getSource = title => {
     const buffer = this.bufferMap.get(title);
     const source = this.context.createBufferSource();
     source.buffer = buffer;
-    source.connect(this.context.destination);
-    source.start();
+    source.connect(this.gainNode);
+    this.gainNode.connect(this.context.destination);
+    return source;
+  };
+
+  setVolume = value => this.gainNode.gain.value = value;
+
+  update = (state) => {
+    this.setVolume(state.volume);
   }
 
 }
