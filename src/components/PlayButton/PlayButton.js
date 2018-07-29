@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import audioContext from '../../classes/AudioContext';
 
 import './PlayButton.css';
-import { connect } from 'react-redux';
 
 export class PlayButton extends PureComponent {
 

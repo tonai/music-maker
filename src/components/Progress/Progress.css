@@ -1,0 +1,8 @@
+.Progress {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: yellow;
+  margin-left: -1px;
+}

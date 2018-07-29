@@ -1,0 +1,16 @@
+.Manager {
+  margin: 20px;
+}
+
+.Manager__tracks {
+  position: relative;
+}
+
+.Manager__progress {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 200px;
+  right: 0;
+  overflow: hidden;
+}

@@ -37,20 +37,27 @@ class AudioContext {
         return buffer;
       });
 
-  load = titles =>
-    Promise.all(titles.map(this.fetch))
-      .then(buffers => buffers.reduce((map, buffer, index) => {
-        map.set(titles[index], buffer);
-        return map;
-      }, this.bufferMap));
+  load = samples => {
+    const titles = samples instanceof Array ? samples : [samples];
+    return Promise.all(titles.map(this.getBuffer))
+      .then(buffers => {
+        buffers.reduce((map, buffer, index) => {
+          map.set(titles[index], buffer);
+          return map;
+        }, this.bufferMap);
+        return samples instanceof Array ? buffers : buffers[0];
+      });
+  };
 
-  getSource = (title, state) => {
+  getBuffer = title => this.bufferMap.get(title) || this.fetch(title);
+
+  getSource = (title) => {
     const buffer = this.bufferMap.get(title);
     const source = this.context.createBufferSource();
+
     source.buffer = buffer;
-    source.connect(this.gainNode);
-    this.gainNode.connect(this.context.destination);
-    this.update(source, state);
+    source.connect(this.context.destination);
+
     return source;
   };
 

@@ -1,49 +1,65 @@
-import { CHANGE_FILTER, CHANGE_FREQUENCY, CHANGE_QUALITY, CHANGE_TYPE, CHANGE_VOLUME } from './actions';
+import { CHANGE_LOOP, CHANGE_SAMPLE, PLAY, STOP } from './actions';
 
 const defaultState = {
-  filter: false,
-  frequency: 1,
-  quality: 1,
-  type: 'lowpass',
-  volume: 1
+  isPlaying: false,
+  loop: false,
+  start: 0,
+  tracks: [
+    {
+      buffer: null,
+      id: 0,
+      sample: ''
+    },
+    {
+      buffer: null,
+      id: 1,
+      sample: ''
+    }
+  ]
 };
 
 export default function(state = defaultState, action) {
   switch(action.type) {
-    case CHANGE_FILTER: {
+    case CHANGE_LOOP: {
       return {
         ...state,
-        filter: action.value
+        loop: action.value
       };
     }
 
-    case CHANGE_FREQUENCY: {
+    case CHANGE_SAMPLE: {
+      const index = state.tracks.findIndex(track => track.id === action.id);
+      if (index === -1) {
+        return state;
+      }
       return {
         ...state,
-        frequency: action.value
+        tracks: [
+          ...state.tracks.slice(0, index),
+          {
+            ...state.tracks[index],
+            buffer: action.buffer,
+            title: action.title
+          },
+          ...state.tracks.slice(index + 1),
+        ]
+      };
+    }
+    case PLAY: {
+      return {
+        ...state,
+        isPlaying: true,
+        start: performance.now()
       };
     }
 
-    case CHANGE_QUALITY: {
+    case STOP: {
       return {
         ...state,
-        quality: action.value
+        isPlaying: false
       };
     }
 
-    case CHANGE_TYPE: {
-      return {
-        ...state,
-        type: action.value
-      };
-    }
-
-    case CHANGE_VOLUME: {
-      return {
-        ...state,
-        volume: action.value
-      };
-    }
 
     default:
       return state;

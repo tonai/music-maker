@@ -1,0 +1,19 @@
+.Track {
+  display: flex;
+  border: 1px solid black;
+}
+
+.Track__head {
+  width: 200px;
+  padding: 10px;
+  border-right: 1px solid black;
+}
+
+.Track__body {
+  flex: 1;
+}
+
+.Track__sample {
+  height: 100%;
+  background-color: red;
+}

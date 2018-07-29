@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
 
-import PlayButton from './components/PlayButton/PlayButton';
-import Settings from './components/Settings/Settings';
+import Manager from './components/Manager/Manager';
 
 class App extends PureComponent {
 
   render = () =>
     <div>
-      <PlayButton sample="techno.wav" title="Play" />
-      <Settings/>
+      <Manager/>
     </div>;
 
 }

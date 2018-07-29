@@ -1,39 +1,31 @@
-export const CHANGE_FILTER = 'CHANGE_FILTER';
-export function changeFilter(value) {
+export const CHANGE_LOOP = 'CHANGE_LOOP';
+export function changeLoop(value) {
   return {
-    type: CHANGE_FILTER,
+    type: CHANGE_LOOP,
     value
   };
 }
 
-export const CHANGE_FREQUENCY = 'CHANGE_FREQUENCY';
-export function changeFrequency(value) {
+export const CHANGE_SAMPLE = 'CHANGE_SAMPLE';
+export function changeSample(id, title, buffer) {
   return {
-    type: CHANGE_FREQUENCY,
-    value
+    buffer,
+    id,
+    title,
+    type: CHANGE_SAMPLE,
   };
 }
 
-export const CHANGE_QUALITY = 'CHANGE_QUALITY';
-export function changeQuality(value) {
+export const PLAY = 'PLAY';
+export function play() {
   return {
-    type: CHANGE_QUALITY,
-    value
+    type: PLAY
   };
 }
 
-export const CHANGE_TYPE = 'CHANGE_TYPE';
-export function changeType(value) {
+export const STOP = 'STOP';
+export function stop() {
   return {
-    type: CHANGE_TYPE,
-    value
-  };
-}
-
-export const CHANGE_VOLUME = 'CHANGE_VOLUME';
-export function changeVolume(value) {
-  return {
-    type: CHANGE_VOLUME,
-    value
+    type: STOP
   };
 }
