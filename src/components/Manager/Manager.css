@@ -2,15 +2,34 @@
   margin: 20px;
 }
 
+.Manager__bg {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 201px;
+  right: 1px;
+}
+
+.Manager__beat {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  margin-left: 0;
+  background-color: black;
+  opacity: 0.5;
+}
+
+
 .Manager__tracks {
   position: relative;
 }
 
 .Manager__progress {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 200px;
-  right: 0;
+  top: 1px;
+  bottom: 1px;
+  left: 201px;
+  right: 1px;
   overflow: hidden;
 }

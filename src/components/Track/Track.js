@@ -13,12 +13,16 @@ export class Track extends PureComponent {
 
   handleChangeSample = event => {
     const title = event.target.value;
-    audioContext.load(title)
-      .then(buffer => this.props.changeSample(this.props.id, title, buffer));
+    if (title) {
+      audioContext.load(title)
+        .then(buffer => this.props.changeSample(this.props.id, title, buffer));
+    } else {
+      this.props.changeSample(this.props.id, title)
+    }
   };
 
   render = () => {
-    const { buffer, id, maxDuration, title } = this.props;
+    const { buffer, id, maxDuration, startOffsets, title } = this.props;
     return (
       <div className="Track">
         <div className="Track__head">
@@ -35,7 +39,12 @@ export class Track extends PureComponent {
           </select>
         </div>
         <div className="Track__body">
-          {buffer && (<div className="Track__sample" style={{ width: `${buffer.duration / maxDuration * 100000}%` }}/>)}
+          {buffer && startOffsets.map(offset => (
+            <div className="Track__sample" key={offset} style={{
+              left: `${offset / maxDuration * 100}%`,
+              width: `${buffer.duration / maxDuration * 100}%`
+            }}/>
+          ))}
         </div>
       </div>
     );

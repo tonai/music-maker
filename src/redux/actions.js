@@ -1,3 +1,5 @@
+import audioContext from '../classes/AudioContext';
+
 export const CHANGE_LOOP = 'CHANGE_LOOP';
 export function changeLoop(value) {
   return {
@@ -19,6 +21,7 @@ export function changeSample(id, title, buffer) {
 export const PLAY = 'PLAY';
 export function play() {
   return {
+    start: audioContext.context.currentTime,
     type: PLAY
   };
 }

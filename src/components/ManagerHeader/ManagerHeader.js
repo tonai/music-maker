@@ -34,6 +34,7 @@ export class ManagerHeader extends PureComponent {
         />
         <label htmlFor="loop">Loop</label>
       </div>
+      <div>{this.props.bpm} bpm</div>
     </div>;
 
 }

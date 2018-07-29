@@ -1,6 +1,10 @@
+import { createIncrementArray } from '../services/utils';
+
 import { CHANGE_LOOP, CHANGE_SAMPLE, PLAY, STOP } from './actions';
 
 const defaultState = {
+  beat: 8,
+  bpm: 114,
   isPlaying: false,
   loop: false,
   start: 0,
@@ -8,12 +12,14 @@ const defaultState = {
     {
       buffer: null,
       id: 0,
-      sample: ''
+      sample: '',
+      startOffsets: createIncrementArray(8).map(i => i / 114 * 60)
     },
     {
       buffer: null,
       id: 1,
-      sample: ''
+      sample: '',
+      startOffsets: [0]
     }
   ]
 };
@@ -49,7 +55,7 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         isPlaying: true,
-        start: performance.now()
+        start: action.start
       };
     }
 

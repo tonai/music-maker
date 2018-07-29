@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 
+import audioContext from '../../classes/AudioContext';
 import { modulo } from '../../services/math';
 
 import './Progress.css';
@@ -22,7 +23,7 @@ export class Progress extends PureComponent {
 
   updateLeft = () => {
     const { isPlaying, maxDuration, start } = this.props;
-    const now = performance.now();
+    const now = audioContext.context.currentTime;
     this.setState({ left: modulo(now - start, maxDuration) / maxDuration * 100 });
     isPlaying
       ? requestAnimationFrame(this.updateLeft)

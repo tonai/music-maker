@@ -6,14 +6,17 @@
 .Track__head {
   width: 200px;
   padding: 10px;
-  border-right: 1px solid black;
 }
 
 .Track__body {
+  position: relative;
   flex: 1;
+  overflow: hidden;
 }
 
 .Track__sample {
+  position: absolute;
   height: 100%;
   background-color: red;
+  opacity: 0.25;
 }
