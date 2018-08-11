@@ -1,8 +1,10 @@
+import { createIncrementArray } from '../services/utils';
+
 class AudioContext {
 
   analyser = null;
   biquadFilter = null;
-  bufferMap = new Map();
+  bufferDataMap = new Map();
   context = null;
   distortion = null;
   gainNode = null;
@@ -16,10 +18,10 @@ class AudioContext {
     this.biquadFilter = this.context.createBiquadFilter();
   }
 
-  decodeAudioData = buffer =>
-    new Promise((resolve, reject) => {
-      this.context.decodeAudioData(buffer, resolve, reject);
-    });
+  decodeAudioData = arrayBuffer =>
+    new Promise((resolve, reject) =>
+      this.context.decodeAudioData(arrayBuffer, buffer => resolve({ buffer }), reject)
+    );
 
   fetch = title =>
     fetch(`${this.sampleDir}${title}`)
@@ -30,32 +32,32 @@ class AudioContext {
         return response.arrayBuffer();
       })
       .then(this.decodeAudioData)
-      .then(buffer => {
-        if (!buffer) {
+      .then(data => {
+        if (!data.buffer) {
           throw new Error(`Error decoding file data ${this.sampleDir}${title}`);
         }
-        return buffer;
+        return data;
       });
 
   load = samples => {
     const titles = samples instanceof Array ? samples : [samples];
-    return Promise.all(titles.map(this.getBuffer))
-      .then(buffers => {
-        buffers.reduce((map, buffer, index) => {
+    return Promise.all(titles.map(this.getBufferData))
+      .then(bufferDatas => {
+        bufferDatas.reduce((map, buffer, index) => {
           map.set(titles[index], buffer);
           return map;
-        }, this.bufferMap);
-        return samples instanceof Array ? buffers : buffers[0];
+        }, this.bufferDataMap);
+        return samples instanceof Array ? bufferDatas : bufferDatas[0];
       });
   };
 
-  getBuffer = title => this.bufferMap.get(title) || this.fetch(title);
+  getBufferData = title => this.bufferDataMap.get(title) || this.fetch(title);
 
   getSource = (title) => {
-    const buffer = this.bufferMap.get(title);
+    const data = this.bufferDataMap.get(title);
     const source = this.context.createBufferSource();
 
-    source.buffer = buffer;
+    source.buffer = data.buffer;
     source.connect(this.context.destination);
 
     return source;

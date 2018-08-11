@@ -9,9 +9,9 @@ export function changeLoop(value) {
 }
 
 export const CHANGE_SAMPLE = 'CHANGE_SAMPLE';
-export function changeSample(id, title, buffer) {
+export function changeSample(id, title, data) {
   return {
-    buffer,
+    data,
     id,
     title,
     type: CHANGE_SAMPLE,

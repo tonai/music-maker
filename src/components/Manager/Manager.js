@@ -42,7 +42,7 @@ export class Manager extends PureComponent {
         <div className="Manager__tracks">
           <div className="Manager__bg">
             {createIncrementArray(beat).map(index => (
-              <div className="Manager__beat" style={{ left: `${index  / beat * 100}%` }}/>
+              <div className="Manager__beat" key={index} style={{ left: `${index  / beat * 100}%` }}/>
             ))}
           </div>
           {tracks.map(track => (
@@ -61,7 +61,7 @@ export class Manager extends PureComponent {
     const maxDuration = this.getMaxDuration();
 
     this.sources = tracks
-      .filter(track => track.buffer)
+      .filter(track => track.data)
       .reduce((acc, track) =>
         acc.concat(track.startOffsets.map(offset => ({
           ...track,

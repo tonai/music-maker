@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 
 import audioContext from '../../classes/AudioContext';
 
 import './Track.css';
 import { changeSample } from '../../redux/actions';
+import { Sample } from '../Sample/Sample';
 
 export class Track extends PureComponent {
 
@@ -15,14 +15,14 @@ export class Track extends PureComponent {
     const title = event.target.value;
     if (title) {
       audioContext.load(title)
-        .then(buffer => this.props.changeSample(this.props.id, title, buffer));
+        .then(data => this.props.changeSample(this.props.id, title, data));
     } else {
       this.props.changeSample(this.props.id, title)
     }
   };
 
   render = () => {
-    const { buffer, id, maxDuration, startOffsets, title } = this.props;
+    const { data, id, maxDuration, startOffsets, title } = this.props;
     return (
       <div className="Track">
         <div className="Track__head">
@@ -39,11 +39,8 @@ export class Track extends PureComponent {
           </select>
         </div>
         <div className="Track__body">
-          {buffer && startOffsets.map(offset => (
-            <div className="Track__sample" key={offset} style={{
-              left: `${offset / maxDuration * 100}%`,
-              width: `${buffer.duration / maxDuration * 100}%`
-            }}/>
+          {data && startOffsets.map(offset => (
+            <Sample key={offset} maxDuration={maxDuration} offset={offset} {...data}/>
           ))}
         </div>
       </div>

@@ -10,13 +10,13 @@ const defaultState = {
   start: 0,
   tracks: [
     {
-      buffer: null,
+      data: null,
       id: 0,
       sample: '',
       startOffsets: createIncrementArray(8).map(i => i / 114 * 60)
     },
     {
-      buffer: null,
+      data: null,
       id: 1,
       sample: '',
       startOffsets: [0]
@@ -44,7 +44,7 @@ export default function(state = defaultState, action) {
           ...state.tracks.slice(0, index),
           {
             ...state.tracks[index],
-            buffer: action.buffer,
+            data: action.data,
             title: action.title
           },
           ...state.tracks.slice(index + 1),
