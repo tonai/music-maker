@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import classnames from 'classnames';
 
 import './Sample.css';
 
@@ -41,10 +42,10 @@ export class Sample extends PureComponent {
   };
 
   render = () => {
-    const { buffer, maxDuration, offset } = this.props;
+    const { active, bpm, buffer, maxDuration, offset } = this.props;
     return (
-      <canvas className="Sample" ref={this.initRef} style={{
-        left: `${offset / maxDuration * 100}%`,
+      <canvas className={classnames('Sample', { active })} ref={this.initRef} style={{
+        left: `${offset / maxDuration / bpm * 60 * 100}%`,
         width: `${buffer.duration / maxDuration * 100}%`
       }}/>
     );

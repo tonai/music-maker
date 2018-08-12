@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
-import { changeSettings, play, stop } from '../../redux/actions';
+import { addTrack, changeSettings, play, stop } from '../../redux/actions';
 
 import './ManagerHeader.css';
 
@@ -9,12 +9,17 @@ export class ManagerHeader extends PureComponent {
   
   getTitle = () => this.props.isPlaying ? 'Stop' : 'Play';
 
+  handleAddTrack = () => this.props.addTrack();
+
   handleChangeSettings = (name, value) => this.props.changeSettings(name, value);
 
   handleChangePlayPause = () => this.props.isPlaying ? this.props.stop() : this.props.play();
 
   render = () =>
     <div className="ManagerHeader">
+      <div className="ManagerHeader__settings">
+        <button onClick={this.handleAddTrack}>Add track</button>
+      </div>
       <div className="ManagerHeader__settings">
         <input
           checked={this.props.isPlaying}
@@ -56,6 +61,7 @@ export class ManagerHeader extends PureComponent {
 const mapStateToProps = state => state;
 
 const mapDispatchToProps = {
+  addTrack,
   changeSettings,
   play,
   stop

@@ -1,15 +1,18 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 
 import audioContext from '../../classes/AudioContext';
 
 import './Track.css';
-import { changeSample } from '../../redux/actions';
+import { changeSample, trackToggleAdd } from '../../redux/actions';
 import { Sample } from '../Sample/Sample';
 
 export class Track extends PureComponent {
 
   getTitle = () => this.props.start ? 'Stop' : 'Play';
+
+  handleAdd = () => this.props.trackToggleAdd(this.props.id);
 
   handleChangeSample = event => {
     const title = event.target.value;
@@ -22,7 +25,7 @@ export class Track extends PureComponent {
   };
 
   render = () => {
-    const { data, id, maxDuration, startOffsets, title } = this.props;
+    const { addMode, data, id, maxDuration, offset, settings, startOffsets, title } = this.props;
     return (
       <div className="Track">
         <div className="Track__head">
@@ -37,11 +40,17 @@ export class Track extends PureComponent {
             <option value="E808_RS-03.wav">E808_RS-03.wav</option>
             <option value="techno.wav">techno.wav</option>
           </select>
+          {data && (
+            <button className={classnames('Track__add', {active: addMode})} onClick={this.handleAdd}>+</button>
+          )}
         </div>
         <div className="Track__body">
           {data && startOffsets.map(offset => (
-            <Sample key={offset} maxDuration={maxDuration} offset={offset} {...data}/>
+            <Sample bpm={settings.bpm} key={offset} maxDuration={maxDuration} offset={offset} {...data}/>
           ))}
+          {addMode && (
+            <Sample active bpm={settings.bpm} maxDuration={maxDuration} offset={offset} {...data}/>
+          )}
         </div>
       </div>
     );
@@ -50,7 +59,8 @@ export class Track extends PureComponent {
 }
 
 const mapDispatchToProps = {
-  changeSample
+  changeSample,
+  trackToggleAdd
 };
 
 export default connect(null, mapDispatchToProps)(Track);

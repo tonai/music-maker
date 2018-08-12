@@ -1,5 +1,19 @@
 import audioContext from '../classes/AudioContext';
 
+export const ADD_SAMPLES = 'ADD_SAMPLES';
+export function addSamples(offset) {
+  return {
+    offset,
+    type: ADD_SAMPLES
+  };
+}
+export const ADD_TRACK = 'ADD_TRACK';
+export function addTrack() {
+  return {
+    type: ADD_TRACK
+  };
+}
+
 export const CHANGE_SETTINGS = 'CHANGE_SETTINGS';
 export function changeSettings(name, value) {
   return {
@@ -32,4 +46,12 @@ export function stop() {
   return {
     type: STOP
   };
+}
+
+export const TRACK_TOGGLE_ADD = 'TRACK_TOGGLE_ADD';
+export function trackToggleAdd(id) {
+  return {
+    id,
+    type: TRACK_TOGGLE_ADD
+  }
 }

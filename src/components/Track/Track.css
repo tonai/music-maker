@@ -6,10 +6,21 @@
 .Track__head {
   width: 200px;
   padding: 10px;
+  position: relative;
 }
 
 .Track__body {
   position: relative;
   flex: 1;
   overflow: hidden;
+}
+
+.Track__add {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.Track__add.active {
+  border-style: inset;
 }

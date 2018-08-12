@@ -1,6 +1,4 @@
-import { createIncrementArray } from '../services/utils';
-
-import { CHANGE_SETTINGS, CHANGE_SAMPLE, PLAY, STOP } from './actions';
+import { ADD_SAMPLES, ADD_TRACK, CHANGE_SETTINGS, CHANGE_SAMPLE, PLAY, STOP, TRACK_TOGGLE_ADD } from './actions';
 
 const defaultState = {
   isPlaying: false,
@@ -10,24 +8,50 @@ const defaultState = {
     loop: false,
   },
   start: 0,
-  tracks: [
-    {
-      data: null,
-      id: 0,
-      sample: '',
-      startOffsets: createIncrementArray(8).map(i => i / 114 * 60)
-    },
-    {
-      data: null,
-      id: 1,
-      sample: '',
-      startOffsets: [0]
-    }
-  ]
+  tracks: []
 };
 
 export default function(state = defaultState, action) {
   switch(action.type) {
+    case ADD_SAMPLES: {
+      return {
+        ...state,
+        tracks: state.tracks.map(track => {
+          if (!track.addMode) {
+            return track;
+          }
+          return {
+            ...track,
+            startOffsets: [
+              ...track.startOffsets,
+              action.offset
+            ]
+          };
+        })
+      };
+    }
+
+    case ADD_TRACK: {
+      return {
+        ...state,
+        tracks: [
+          ...state.tracks,
+          {
+            addMode: false,
+            data: null,
+            nodes: [
+              {
+                type: 'gain',
+                gain: 1
+              }
+            ],
+            sample: '',
+            startOffsets: []
+          }
+        ]
+      };
+    }
+
     case CHANGE_SETTINGS: {
       return {
         ...state,
@@ -39,23 +63,20 @@ export default function(state = defaultState, action) {
     }
 
     case CHANGE_SAMPLE: {
-      const index = state.tracks.findIndex(track => track.id === action.id);
-      if (index === -1) {
-        return state;
-      }
       return {
         ...state,
         tracks: [
-          ...state.tracks.slice(0, index),
+          ...state.tracks.slice(0, action.id),
           {
-            ...state.tracks[index],
+            ...state.tracks[action.id],
             data: action.data,
             title: action.title
           },
-          ...state.tracks.slice(index + 1),
+          ...state.tracks.slice(action.id + 1),
         ]
       };
     }
+
     case PLAY: {
       return {
         ...state,
@@ -71,6 +92,19 @@ export default function(state = defaultState, action) {
       };
     }
 
+    case TRACK_TOGGLE_ADD: {
+      return  {
+        ...state,
+        tracks: [
+          ...state.tracks.slice(0, action.id),
+          {
+            ...state.tracks[action.id],
+            addMode: !state.tracks[action.id].addMode
+          },
+          ...state.tracks.slice(action.id + 1),
+        ]
+      };
+    }
 
     default:
       return state;
