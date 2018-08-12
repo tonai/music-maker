@@ -1,0 +1,7 @@
+.ManagerHeader {
+  display: flex;
+}
+
+.ManagerHeader__settings {
+  flex: 1;
+}

@@ -26,23 +26,23 @@ export class Manager extends PureComponent {
     }
   }
 
-  getMaxDuration = () => 8 / this.props.bpm * 60;
+  getMaxDuration = () => this.props.settings.beat / this.props.settings.bpm * 60;
 
   handleEnd = () =>
-    this.props.loop && this.props.isPlaying
+    this.props.settings.loop && this.props.isPlaying
       ? this.props.play()
       : this.props.stop();
 
   render = () => {
-    const { beat, isPlaying, start, tracks } = this.props;
+    const { isPlaying, settings, start, tracks } = this.props;
     const maxDuration = this.getMaxDuration();
     return (
       <div className="Manager">
         <ManagerHeader/>
         <div className="Manager__tracks">
           <div className="Manager__bg">
-            {createIncrementArray(beat).map(index => (
-              <div className="Manager__beat" key={index} style={{ left: `${index  / beat * 100}%` }}/>
+            {createIncrementArray(settings.beat).map(index => (
+              <div className="Manager__beat" key={index} style={{ left: `${index  / settings.beat * 100}%` }}/>
             ))}
           </div>
           {tracks.map(track => (

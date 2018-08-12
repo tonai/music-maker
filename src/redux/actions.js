@@ -1,9 +1,10 @@
 import audioContext from '../classes/AudioContext';
 
-export const CHANGE_LOOP = 'CHANGE_LOOP';
-export function changeLoop(value) {
+export const CHANGE_SETTINGS = 'CHANGE_SETTINGS';
+export function changeSettings(name, value) {
   return {
-    type: CHANGE_LOOP,
+    name,
+    type: CHANGE_SETTINGS,
     value
   };
 }

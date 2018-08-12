@@ -1,12 +1,14 @@
 import { createIncrementArray } from '../services/utils';
 
-import { CHANGE_LOOP, CHANGE_SAMPLE, PLAY, STOP } from './actions';
+import { CHANGE_SETTINGS, CHANGE_SAMPLE, PLAY, STOP } from './actions';
 
 const defaultState = {
-  beat: 8,
-  bpm: 114,
   isPlaying: false,
-  loop: false,
+  settings: {
+    beat: 8,
+    bpm: 114,
+    loop: false,
+  },
   start: 0,
   tracks: [
     {
@@ -26,10 +28,13 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
   switch(action.type) {
-    case CHANGE_LOOP: {
+    case CHANGE_SETTINGS: {
       return {
         ...state,
-        loop: action.value
+        settings: {
+          ...state.settings,
+          [action.name]: action.value
+        }
       };
     }
 
