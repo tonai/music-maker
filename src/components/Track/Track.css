@@ -1,26 +1,36 @@
 .Track {
-  display: flex;
   border: 1px solid black;
 }
 
+.Track__row {
+  display: flex;
+}
+
 .Track__head {
-  width: 200px;
+  display: flex;
   padding: 10px;
   position: relative;
+  width: 200px;
+}
+
+.Track__head--node {
+  padding: 0 10px;
 }
 
 .Track__body {
-  position: relative;
   flex: 1;
   overflow: hidden;
-}
-
-.Track__add {
-  position: absolute;
-  right: 0;
-  top: 0;
+  position: relative;
 }
 
 .Track__add.active {
   border-style: inset;
+}
+
+.Track__label {
+  margin-right: 10px;
+}
+
+.Track__input {
+  width: 100%;
 }

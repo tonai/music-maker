@@ -1,4 +1,14 @@
-import { ADD_SAMPLES, ADD_TRACK, CHANGE_SETTINGS, CHANGE_SAMPLE, PLAY, STOP, TRACK_TOGGLE_ADD } from './actions';
+import audioContext from '../classes/AudioContext';
+import {
+  ADD_SAMPLES,
+  ADD_TRACK,
+  CHANGE_NODE_VALUE,
+  CHANGE_SETTINGS,
+  CHANGE_SAMPLE,
+  PLAY,
+  STOP,
+  TRACK_TOGGLE_ADD
+} from './actions';
 
 const defaultState = {
   isPlaying: false,
@@ -39,16 +49,31 @@ export default function(state = defaultState, action) {
           {
             addMode: false,
             data: null,
-            nodes: [
-              {
-                type: 'gain',
-                gain: 1
-              }
-            ],
+            nodes: [ audioContext.context.createGain() ],
             sample: '',
             startOffsets: []
           }
         ]
+      };
+    }
+
+    case CHANGE_NODE_VALUE: {
+      return {
+        ...state,
+        tracks: state.tracks.map((track, index) => {
+          if (index !== action.id) {
+            return track;
+          }
+          return {
+            ...track,
+            nodes: track.nodes.map((node, index) => {
+              if (index === action.node) {
+                node.gain.value = action.value;
+              }
+              return node;
+            })
+          };
+        })
       };
     }
 

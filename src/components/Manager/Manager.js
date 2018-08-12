@@ -39,7 +39,7 @@ export class Manager extends PureComponent {
     const { settings } = this.props;
     const { pageX } = this.state;
     const offset = (pageX - left) / width * maxDuration * settings.bpm / 60;
-    return Math.round(offset);
+    return Math.floor(offset);
   };
 
   handleClick = () => this.props.addSamples(this.getOffset());
@@ -111,7 +111,7 @@ export class Manager extends PureComponent {
       )
       .map(track => ({
         ...track,
-        source: audioContext.getSource(track.title)
+        source: audioContext.getSource(track.title, track.nodes)
       }));
 
     this.sources.forEach(source => source.source.start(source.offset / settings.bpm * 60 + start));

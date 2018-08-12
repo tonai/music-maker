@@ -14,6 +14,17 @@ export function addTrack() {
   };
 }
 
+export const CHANGE_NODE_VALUE = 'CHANGE_NODE_VALUE';
+export function changeNodeValue(id, node, name, value) {
+  return {
+    id,
+    name,
+    node,
+    type: CHANGE_NODE_VALUE,
+    value
+  }
+}
+
 export const CHANGE_SETTINGS = 'CHANGE_SETTINGS';
 export function changeSettings(name, value) {
   return {

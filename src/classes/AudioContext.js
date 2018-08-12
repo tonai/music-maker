@@ -1,19 +1,11 @@
 class AudioContext {
 
-  analyser = null;
-  biquadFilter = null;
   bufferDataMap = new Map();
   context = null;
-  distortion = null;
-  gainNode = null;
   sampleDir = 'samples/';
 
   constructor() {
     this.context = new window.AudioContext();
-    this.analyser = this.context.createAnalyser();
-    this.distortion = this.context.createWaveShaper();
-    this.gainNode = this.context.createGain();
-    this.biquadFilter = this.context.createBiquadFilter();
   }
 
   decodeAudioData = arrayBuffer =>
@@ -51,43 +43,20 @@ class AudioContext {
 
   getBufferData = title => this.bufferDataMap.get(title) || this.fetch(title);
 
-  getSource = (title) => {
+  getSource = (title, nodes) => {
     const data = this.bufferDataMap.get(title);
-    const source = this.context.createBufferSource();
+    const audioBufferSourceNode  = this.context.createBufferSource();
+    audioBufferSourceNode.buffer = data.buffer;
 
-    source.buffer = data.buffer;
+    let source = audioBufferSourceNode;
+    nodes.forEach(node => {
+      source.connect(node);
+      source = node;
+    });
     source.connect(this.context.destination);
 
-    return source;
+    return audioBufferSourceNode;
   };
-
-  setFilter = (source, value) => {
-    if (!source) {
-      return;
-    }
-    source.disconnect(0);
-    this.biquadFilter.disconnect(0);
-    if (value) {
-      source.connect(this.biquadFilter);
-      this.biquadFilter.connect(this.gainNode);
-    } else {
-      source.connect(this.gainNode);
-    }
-  };
-
-  setFrequency = value => {
-    const minValue = 40; // 40Hz
-    const maxValue = this.context.sampleRate / 2;
-    const numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
-    const multiplier = Math.pow(2, numberOfOctaves * (value - 1));
-    this.biquadFilter.frequency.value = maxValue * multiplier;
-  };
-
-  setQuality = value => this.biquadFilter.Q.value = value * 30;
-
-  setType = value => this.biquadFilter.type = value;
-
-  setVolume = value => this.gainNode.gain.value = value;
 
   update = (source, state) => {
     this.setFilter(source, state.filter);
